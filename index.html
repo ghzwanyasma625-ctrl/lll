@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تعلم العمليات الحسابية</title>
+  <meta name="description" content="منصة تفاعلية لتعلم الجمع والطرح والضرب والقسمة بخطط دروس وألعاب وتمارين وإحصائيات تقدم." />
+  <meta name="theme-color" content="#2563eb" />
+  <style>
+    :root{--bg:#0b1022;--fg:#e5e7eb;--mut:#94a3b8;--card:#10172a;--b:#1f2937;--accent:#2563eb;--ok:#10b981;--bad:#ef4444}
+    :root.light{--bg:#f8fafc;--fg:#0f172a;--mut:#475569;--card:#ffffff;--b:#e2e8f0;--accent:#2563eb}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Naskh Arabic UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--b);position:sticky;top:0;z-index:10}
+    .brand{display:flex;align-items:center;gap:8px;font-weight:700}
+    .logo{width:24px;height:24px;display:inline-block}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}
+    .nav .nav-link{border:1px solid var(--b);background:transparent;color:var(--fg);padding:8px 10px;border-radius:8px;cursor:pointer}
+    .nav .nav-link[aria-current="page"],.nav .nav-link:hover{border-color:var(--accent);color:var(--accent)}
+    main{max-width:1000px;margin:0 auto;padding:24px}
+    .lead{color:var(--mut)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:16px}
+    .btn{background:var(--accent);border:1px solid var(--accent);color:white;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--fg);border-color:var(--b)}
+    .panel{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:16px;margin:16px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .question{display:flex;align-items:center;justify-content:center;gap:10px;font-size:28px}
+    .question input{width:140px;text-align:center;font-size:22px}
+    .numpad .pad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .pad-grid .wide{grid-column:span 2}
+    .pad-grid button{font-size:18px;padding:10px;border-radius:10px;border:1px solid var(--b);background:var(--bg);color:var(--fg);cursor:pointer}
+    .feedback{min-height:24px;margin-top:8px}
+    .feedback.ok{color:var(--ok)}
+    .feedback.no{color:var(--bad)}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+    .switch{display:flex;align-items:center;gap:8px;margin:8px 0}
+    .canvas{border:1px dashed var(--b);border-radius:8px;background:rgba(37,99,235,.08)}
+    .footer{padding:24px;text-align:center;color:var(--mut)}
+    .memory{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px}
+    .memory .cardx{background:var(--bg);border:1px solid var(--b);border-radius:10px;padding:12px;text-align:center;cursor:pointer}
+    @media (max-width:560px){.question{flex-wrap:wrap;font-size:24px}.question input{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <!-- شعار SVG مضمّن -->
+      <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>
+        <rect width="120" height="120" rx="24" fill="url(#g)"/>
+        <g fill="#ffffff" font-family="Segoe UI, Arial" font-weight="700">
+          <text x="16" y="48" font-size="30">5 + 7</text>
+          <text x="16" y="88" font-size="26">= 12</text>
+        </g>
+      </svg>
+      <span>تعلم العمليات الحسابية</span>
+    </div>
+    <nav class="nav" aria-label="التنقل">
+      <button class="nav-link" data-route="home" aria-current="page">الرئيسية</button>
+      <button class="nav-link" data-route="lessons">الدروس</button>
+      <button class="nav-link" data-route="practice">تمارين</button>
+      <button class="nav-link" data-route="games">ألعاب</button>
+      <button class="nav-link" data-route="progress">التقدم</button>
+      <button class="nav-link" data-route="settings">الإعدادات</button>
+    </nav>
+  </header>
+
+  <main id="app" tabindex="-1">
+    <!-- الرئيسية -->
+    <section class="route" id="rt-home">
+      <h1>مرحبًا بك 👋</h1>
+      <p class="lead">ابدأ بالدروس القصيرة، ثم درّب مهاراتك بتمارين تكيّفية وألعاب ممتعة.</p>
+      <div class="cards">
+        <div class="card">
+          <h3>خطط الدروس</h3>
+          <p>دروس قصيرة مع أمثلة بصرية واستراتيجيات ذهنية.</p>
+          <button class="btn" data-go="lessons">إلى الدروس</button>
+        </div>
+        <div class="card">
+          <h3>تمارين تكيّفية</h3>
+          <p>المستوى يتغيّر تلقائيًا حسب أدائك.</p>
+          <button class="btn" data-go="practice">ابدأ التدريب</button>
+        </div>
+        <div class="card">
+          <h3>ألعاب</h3>
+          <p>سباق الزمن وذاكرة البطاقات لتثبيت المهارة.</p>
+          <button class="btn" data-go="games">هيا نلعب</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- الدروس -->
+    <section class="route" id="rt-lessons" hidden>
+      <h2>الدروس الأساسية</h2>
+      <div class="lesson-list">
+        <article class="lesson" data-lesson="add">
+          <header><h3>الجمع (+)</h3></header>
+          <div class="lesson-body">
+            <p>الجمع هو ضمّ كميتين. مثال بصري:</p>
+            <div class="chips" id="chips-add"></div>
+            <p class="tip">استراتيجية: <strong>التجميع إلى عشرة</strong> — مثل 8 + 7 = (8 + 2) + 5 = 10 + 5 = 15.</p>
+          </div>
+        </article>
+        <article class="lesson" data-lesson="sub">
+          <header><h3>الطرح (−)</h3></header>
+          <div class="lesson-body">
+            <p>الطرح هو الإزالة أو الفرق. مثال بصري:</p>
+            <div class="chips" id="chips-sub"></div>
+            <p class="tip">استراتيجية: <strong>العدّ التراجعي</strong> و<strong>التقريب</strong> (52 − 19 = 52 − 20 + 1).</p>
+          </div>
+        </article>
+        <article class="lesson" data-lesson="mul">
+          <header><h3>الضرب (×)</h3></header>
+          <div class="lesson-body">
+            <p>الضرب تكرار الجمع. شبكة 3×4 تعني 3 صفوف × 4 عناصر:</p>
+            <canvas id="grid-mul" width="240" height="160" class="canvas"></canvas>
+            <p class="tip">استراتيجيات: <strong>التجميع</strong>، <strong>خاصية التبديل</strong> (a×b=b×a)، و<strong>التفكيك</strong> (6×7 = 6×(5+2)).</p>
+          </div>
+        </article>
+        <article class="lesson" data-lesson="div">
+          <header><h3>القسمة (÷)</h3></header>
+          <div class="lesson-body">
+            <p>القسمة توزيع متساوٍ. 12 ÷ 3 يعني 12 موزّعة على 3 مجموعات بالتساوي:</p>
+            <div class="chips" id="chips-div"></div>
+            <p class="tip">اربط القسمة بالضرب: إذا 3×4=12، إذن 12÷3=4.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- تمارين تكيّفية -->
+    <section class="route" id="rt-practice" hidden>
+      <h2>تمارين تكيّفية</h2>
+      <form id="cfg" class="panel" aria-describedby="cfg-help">
+        <div class="grid">
+          <label>نوع العملية
+            <select name="op">
+              <option value="mix">متنوع</option>
+              <option value="+">جمع</option>
+              <option value="-">طرح</option>
+              <option value="*">ضرب</option>
+              <option value="/">قسمة</option>
+            </select>
+          </label>
+          <label>المستوى المبدئي
+            <select name="lvl">
+              <option value="1">سهل</option>
+              <option value="2" selected>متوسط</option>
+              <option value="3">متقدم</option>
+            </select>
+          </label>
+          <label>مدة الجلسة (ث)
+            <input type="number" name="sec" value="60" min="0" max="600" step="10"/>
+          </label>
+          <label>طريقة الإدخال
+            <select name="in">
+              <option value="kbd">لوحة المفاتيح</option>
+              <option value="pad">لوحة أرقام</option>
+            </select>
+          </label>
+        </div>
+        <p id="cfg-help" class="muted">اجعل المدة 0 لتمرين بدون مؤقّت.</p>
+        <button class="btn primary" type="submit">ابدأ</button>
+      </form>
+
+      <div id="sess" class="panel session" hidden>
+        <div class="session-top">
+          <div>سؤال <span id="qi">1</span></div>
+          <div>صحيحة: <span id="ok">0</span></div>
+          <div>سلسلة: <span id="st">0</span></div>
+          <div>الوقت: <span id="tm">60</span>ث</div>
+        </div>
+        <div class="question" aria-live="polite">
+          <span id="l">0</span>
+          <span id="o">+</span>
+          <span id="r">0</span>
+          <span>=</span>
+          <input id="ans" inputmode="numeric" autocomplete="off" />
+          <button class="btn" id="chk">تحقّق</button>
+        </div>
+        <div id="num" class="numpad" hidden aria-label="لوحة أرقام">
+          <div class="pad-grid">
+            <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+            <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+            <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+            <button data-k="0" class="wide">0</button><button data-k="clear">⌫</button>
+          </div>
+        </div>
+        <div id="fb" class="feedback" aria-live="polite"></div>
+        <div class="session-actions">
+          <button class="btn ghost" id="skip">تخطي</button>
+          <button class="btn" id="end">إنهاء</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ألعاب -->
+    <section class="route" id="rt-games" hidden>
+      <h2>ألعاب تثبيت المهارة</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>سباق الزمن ⏱️</h3>
+          <p>حل أكبر عدد خلال 60 ثانية.</p>
+          <button class="btn" id="g-time">ابدأ</button>
+          <div id="g-time-area" class="panel game" hidden>
+            <div>باقي: <span id="gt-left">60</span>ث | صحيحة: <span id="gt-ok">0</span></div>
+            <div class="question"><span id="gt-l">0</span><span id="gt-o">+</span><span id="gt-r">0</span>= <input id="gt-a" inputmode="numeric"/></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>ذاكرة البطاقات 🧠</h3>
+          <p>اقلب بطاقتين: عملية ونتيجتها. طابقهما للفوز.</p>
+          <button class="btn" id="g-memory">ابدأ</button>
+          <div id="g-mem-area" class="panel game memory" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- التقدم -->
+    <section class="route" id="rt-progress" hidden>
+      <h2>تقدم التعلم</h2>
+      <div class="panel stats">
+        <div>إجمالي الأسئلة: <strong id="s-total">0</strong></div>
+        <div>صحيحة: <strong id="s-ok">0</strong></div>
+        <div>الدقّة: <strong id="s-acc">0%</strong></div>
+        <div>أفضل 60ث: <strong id="s-best">0</strong></div>
+      </div>
+      <button class="btn ghost" id="reset">إعادة ضبط</button>
+    </section>
+
+    <!-- الإعدادات -->
+    <section class="route" id="rt-settings" hidden>
+      <h2>الإعدادات</h2>
+      <div class="panel">
+        <label class="switch"><input type="checkbox" id="light"/> <span>وضع فاتح</span></label>
+        <label class="switch"><input type="checkbox" id="sound"/> <span>أصوات</span></label>
+        <label class="switch"><input type="checkbox" id="hint" checked/> <span>تلميحات تعليمية</span></label>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><small>© <span id="y"></span> تعلم العمليات الحسابية</small></footer>
+
+  <script>
+    // أدوات
+    const $ = (s,p=document)=>p.querySelector(s);
+    const $$=(s,p=document)=>Array.from(p.querySelectorAll(s));
+    const S = {
+      get k(){ return JSON.parse(localStorage.getItem('ia_stats')||'{}'); },
+      set k(v){ localStorage.setItem('ia_stats', JSON.stringify(v)); },
+      get st(){ return JSON.parse(localStorage.getItem('ia_settings')||'{}'); },
+      set st(v){ localStorage.setItem('ia_settings', JSON.stringify(v)); }
+    };
+    function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+    function choice(a){ return a[Math.floor(Math.random()*a.length)]; }
+
+    // توجيه
+    const routes=['home','lessons','practice','games','progress','settings'];
+    function go(r){
+      routes.forEach(x=>{ const sec=$('#rt-'+x); if(!sec) return; sec.hidden = (x!==r); });
+      $$('.nav .nav-link').forEach(b=> b.setAttribute('aria-current', b.dataset.route===r? 'page':'false'));
+      history.replaceState({},'', '#'+r); $('#app').focus();
+    }
+    function initNav(){
+      const h=(location.hash||'').slice(1);
+      go(routes.includes(h)?h:'home');
+      $$('.nav .nav-link').forEach(b=> b.addEventListener('click', ()=> go(b.dataset.route)));
+      $$('[data-go]').forEach(b=> b.addEventListener('click', ()=> go(b.dataset.go)));
+    }
+
+    // أصوات
+    function beep(ok=true){
+      const st=S.st||{}; if(!st.sound) return;
+      try{
+        const c=new (window.AudioContext||window.webkitAudioContext)();
+        const o=c.createOscillator(); const g=c.createGain();
+        o.frequency.value= ok?880:220; o.connect(g); g.connect(c.destination);
+        g.gain.setValueAtTime(0.0001,c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.2,c.currentTime+0.01);
+        o.start(); g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+0.15); o.stop(c.currentTime+0.16);
+      }catch{}
+    }
+
+    // رسوم الدروس
+    function renderChips(id, a=5, b=3, mode='add'){
+      const host=$(id); host.innerHTML='';
+      const mk=(n,c)=>{
+        const box=document.createElement('div'); box.className='chips-row';
+        for(let i=0;i<n;i++){const d=document.createElement('span'); d.textContent='●'; d.style.margin='2px'; d.style.color=c; box.appendChild(d);}
+        return box;
+      };
+      host.appendChild(mk(a,'#10b981')); if(mode==='add') host.appendChild(mk(b,'#3b82f6'));
+      if(mode==='sub'){ const left=Math.max(a-b,0); host.appendChild(document.createTextNode(`  ${a} − ${b} = ${left}`)); }
+      if(mode==='add'){ host.appendChild(document.createTextNode(`  ${a} + ${b} = ${a+b}`)); }
+    }
+    function drawMulGrid(w=3,h=4){
+      const cv=$('#grid-mul'); if(!cv) return; const ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
+      const cw=40,ch=40; ctx.fillStyle='#2563eb';
+      for(let y=0;y<h;y++){ for(let x=0;x<w;x++){ ctx.globalAlpha=0.2+0.6*((x+y)%2); ctx.fillRect(20+x*cw,20+y*ch,28,28);} }
+      ctx.globalAlpha=1; ctx.fillStyle='#e5e7eb'; ctx.font='16px system-ui'; ctx.fillText(`${w} × ${h} = ${w*h}`, 20, 20+h*ch+24);
+    }
+
+    // توليد سؤال
+    function mkQ(op, level){
+      let min=0,max=10; if(level===2){max=20;} if(level===3){max=100;}
+      if(op==='mix') op = choice(['+','-','*','/']);
+      let a=rand(min,max), b=rand(min,max);
+      if(op==='-'){ if(a<b) [a,b]=[b,a]; return {a,b,op,ans:a-b}; }
+      if(op==='*'){ return {a,b,op,ans:a*b}; }
+      if(op==='/'){ b=Math.max(1,b); const ans=rand(1, (level>=3?12:10)); a=b*ans; return {a,b,op,ans}; }
+      return {a,b,op,ans:a+b};
+    }
+    function sym(op){ return op==='*'?'×':op==='/'?'÷':op; }
+
+    // تكيّف المستوى
+    function nextLevel(cur, streak, accuracy){
+      if(streak>=5 && accuracy>=0.85 && cur<3) return cur+1;
+      if(accuracy<0.5 && cur>1) return cur-1;
+      return cur;
+    }
+
+    // جلسة التمارين
+    const P={cfg:null, list:[], i:0, ok:0, st:0, left:0, t:null, cur:null, acc:1};
+    function startPractice(form){
+      const d=new FormData(form);
+      P.cfg={op:d.get('op'), lvl:Number(d.get('lvl')), sec:Number(d.get('sec')), in:d.get('in')};
+      P.list=Array.from({length:50}, ()=> mkQ(P.cfg.op, P.cfg.lvl)); P.i=0; P.ok=0; P.st=0; P.acc=1;
+      $('#cfg').hidden=true; $('#sess').hidden=false; $('#num').hidden = (P.cfg.in!=='pad');
+      if(P.cfg.sec>0){ P.left=P.cfg.sec; $('#tm').textContent=P.left; P.t=setInterval(()=>{ P.left--; $('#tm').textContent=P.left; if(P.left<=0){ endPractice(); } },1000);}
+      else { $('#tm').textContent='—'; }
+      renderPQ(); $('#ans').focus();
+    }
+    function renderPQ(){
+      const q=P.list[P.i]; P.cur=q;
+      $('#qi').textContent=P.i+1; $('#l').textContent=q.a; $('#r').textContent=q.b; $('#o').textContent=sym(q.op);
+      $('#ans').value=''; $('#fb').textContent='';
+    }
+    function checkP(){
+      const v=Number($('#ans').value.trim()); if(Number.isNaN(v)) return;
+      const ok=(v===P.cur.ans);
+      if(ok){ P.ok++; P.st++; $('#fb').textContent='أحسنت!'; $('#fb').className='feedback ok'; beep(true);}
+      else { P.st=0; $('#fb').textContent=`غير صحيح. الإجابة: ${P.cur.ans}`; $('#fb').className='feedback no'; beep(false);}
+      $('#ok').textContent=P.ok; $('#st').textContent=P.st;
+      P.i++; if(P.i>=P.list.length){ endPractice(); return; }
+      // تكيّف
+      const totals=P.i; P.acc = P.ok/Math.max(1,totals);
+      const nl = nextLevel(P.cfg.lvl, P.st, P.acc);
+      if(nl!==P.cfg.lvl){ P.cfg.lvl=nl; P.list[P.i]=mkQ(P.cfg.op, P.cfg.lvl); }
+      renderPQ();
+    }
+    function endPractice(){
+      if(P.t){ clearInterval(P.t); P.t=null; }
+      $('#cfg').hidden=false; $('#sess').hidden=true;
+      const st=S.k||{total:0,ok:0,best:0}; st.total=(st.total||0)+P.i; st.ok=(st.ok||0)+P.ok; S.k=st; updStats();
+    }
+    function bindPad(){
+      $$('#num .pad-grid button').forEach(b=> b.addEventListener('click',()=>{
+        const k=b.dataset.k; if(k==='clear'){ $('#ans').value=$('#ans').value.slice(0,-1); return;}
+        $('#ans').value+=k; $('#ans').focus();
+      }))
+    }
+
+    // لعبة الوقت
+    const Gt={t:null,left:0,ok:0,cur:null};
+    function gtStart(){
+      $('#g-time-area').hidden=false; Gt.left=60; Gt.ok=0; $('#gt-left').textContent=Gt.left; $('#gt-ok').textContent=Gt.ok;
+      gtNext(); Gt.t=setInterval(()=>{
+        Gt.left--; $('#gt-left').textContent=Gt.left;
+        if(Gt.left<=0){ clearInterval(Gt.t); Gt.t=null; const st=S.k||{total:0,ok:0,best:0}; st.best=Math.max(st.best||0,Gt.ok); S.k=st; updStats(); }
+      },1000);
+    }
+    function gtNext(){
+      const q=mkQ(choice(['+','-','*']),2); Gt.cur=q;
+      $('#gt-l').textContent=q.a; $('#gt-r').textContent=q.b; $('#gt-o').textContent=sym(q.op);
+      $('#gt-a').value=''; $('#gt-a').focus();
+    }
+    function gtSubmit(){
+      const v=Number($('#gt-a').value.trim()); if(Number.isNaN(v)) return;
+      if(v===Gt.cur.ans){ Gt.ok++; $('#gt-ok').textContent=Gt.ok; beep(true);} else { beep(false); }
+      gtNext();
+    }
+
+    // لعبة الذاكرة
+    function memStart(){
+      const host=$('#g-mem-area'); host.hidden=false; host.innerHTML='';
+      const pairs=6; const ops=['+','-','*']; const cards=[];
+      for(let i=0;i<pairs;i++){
+        const op=choice(ops); const q=mkQ(op,2);
+        cards.push({t:`${q.a} ${sym(q.op)} ${q.b}`, v:q.ans}); cards.push({t:String(q.ans), v:q.ans});
+      }
+      // خلط
+      for(let i=cards.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cards[i],cards[j]]=[cards[j],cards[i]]; }
+      cards.forEach((c,idx)=>{
+        const d=document.createElement('div'); d.className='cardx'; d.textContent='؟';
+        d.dataset.v=c.v; d.dataset.idx=idx; d.dataset.show=c.t;
+        d.addEventListener('click',()=> memFlip(d)); host.appendChild(d);
+      });
+      host.dataset.sel=''; host.dataset.found='0';
+    }
+    function memFlip(el){
+      if(el.classList.contains('done')|| el.textContent!=='؟') return;
+      el.textContent=el.dataset.show;
+      const host=$('#g-mem-area'); const sel=host.dataset.sel;
+      if(!sel){ host.dataset.sel=el.dataset.idx; return; }
+      const el2=[...host.children].find(x=> x.dataset.idx===sel);
+      if(!el2) { host.dataset.sel=''; return; }
+      if(el.dataset.v===el2.dataset.v && el!==el2){
+        el.classList.add('done'); el2.classList.add('done'); beep(true);
+        host.dataset.found=String(Number(host.dataset.found)+1);
+        if(Number(host.dataset.found)>=6){ const st=S.k||{total:0,ok:0,best:0}; st.ok=(st.ok||0)+6; st.total=(st.total||0)+6; S.k=st; updStats(); }
+      }else{
+        beep(false); setTimeout(()=>{ el.textContent='؟'; el2.textContent='؟'; },600);
+      }
+      host.dataset.sel='';
+    }
+
+    // تقدم
+    function updStats(){
+      const s=S.k||{total:0,ok:0,best:0};
+      $('#s-total').textContent=s.total||0;
+      $('#s-ok').textContent=s.ok||0;
+      const acc=(s.total>0? Math.round(100*(s.ok/s.total)):0); $('#s-acc').textContent=acc+'%';
+      $('#s-best').textContent=s.best||0;
+    }
+
+    // إعدادات
+    function applySettings(){
+      const st=S.st||{};
+      document.documentElement.classList.toggle('light', !!st.light);
+      $('#light').checked=!!st.light; $('#sound').checked=!!st.sound; $('#hint').checked= st.hint!==false;
+    }
+    function bindSettings(){
+      $('#light').addEventListener('change', e=>{ const st=S.st||{}; st.light=e.target.checked; S.st=st; applySettings(); });
+      $('#sound').addEventListener('change', e=>{ const st=S.st||{}; st.sound=e.target.checked; S.st=st; });
+      $('#hint').addEventListener('change', e=>{ const st=S.st||{}; st.hint=e.target.checked; S.st=st; });
+    }
+
+    // ربط الأحداث العامة
+    function bind(){
+      // دروس
+      renderChips('#chips-add',5,3,'add'); renderChips('#chips-sub',9,4,'sub'); drawMulGrid(3,4); renderChips('#chips-div',12,3,'sub');
+      // تمارين
+      $('#cfg').addEventListener('submit', e=>{ e.preventDefault(); startPractice(e.target); });
+      $('#chk').addEventListener('click', checkP); $('#ans').addEventListener('keydown', e=>{ if(e.key==='Enter') checkP(); });
+      $('#skip').addEventListener('click', ()=>{ P.st=0; $('#st').textContent='0'; P.i++; if(P.i>=P.list.length) endPractice(); else renderPQ(); });
+      $('#end').addEventListener('click', endPractice); bindPad();
+      // ألعاب
+      $('#g-time').addEventListener('click', gtStart); $('#gt-a').addEventListener('keydown', e=>{ if(e.key==='Enter') gtSubmit(); });
+      $('#g-memory').addEventListener('click', memStart);
+      // تقدم
+      $('#reset').addEventListener('click', ()=>{ S.k={total:0,ok:0,best:0}; updStats(); });
+    }
+
+    // تشغيل
+    window.addEventListener('DOMContentLoaded', ()=>{
+      $('#y').textContent=new Date().getFullYear();
+      initNav(); bind(); updStats(); applySettings(); bindSettings();
+    });
+  </script>
+</body>
+</html>
